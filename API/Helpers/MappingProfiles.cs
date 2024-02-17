@@ -10,9 +10,11 @@ namespace API.Helpers
     {
         public MappingProfiles()
         {
+            // Here we are maping from Product to ProductToReturnDto
             CreateMap<Product, ProductToReturnDto>()
                 .ForMember(d => d.ProductBrand, o => o.MapFrom(s => s.ProductBrand.Name))
                 .ForMember(d => d.ProductType, o => o.MapFrom(s => s.ProductType.Name))
+                //We are getting the information from ProductUrlResolver
                 .ForMember(d => d.PictureUrl, o => o.MapFrom<ProductUrlResolver>());
             CreateMap<Core.Entities.Identity.Address, AddressDto>().ReverseMap();
             CreateMap<CustomerBasketDto, CustomerBasket>();

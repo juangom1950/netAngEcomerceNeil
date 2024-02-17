@@ -15,9 +15,14 @@ namespace API.Extensions
         {
             services.AddDbContext<AppIdentityDbContext>(opt =>
             {
-                opt.UseNpgsql(config.GetConnectionString("IdentityConnection"));
-            });
+                // This configuration is comming from the appsettings.json
+                opt.UseSqlServer(config.GetConnectionString("IdentityConnection"));
 
+                //opt.UseNpgsql(config.GetConnectionString("IdentityConnection"));
+            });
+            
+            // This need to be program in the Program.cs
+            // Authentication goes 1st before Authorization
             services.AddIdentityCore<AppUser>(opt => 
             {
                 // add identity options here
@@ -26,12 +31,12 @@ namespace API.Extensions
             .AddSignInManager<SignInManager<AppUser>>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options => 
+                .AddJwtBearer(options =>
                 {
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
-                        IssuerSigningKey  = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Token:Key"])),
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Token:Key"])),
                         ValidIssuer = config["Token:Issuer"],
                         ValidateIssuer = true,
                         ValidateAudience = false

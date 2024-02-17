@@ -21,6 +21,7 @@ namespace API.Controllers
         {
             var basket = await _basketRepository.GetBasketAsync(id);
 
+            // If it is null, we will back a new basket empty basket with thin new generated id generated from the client
             return Ok(basket ?? new CustomerBasket(id));
         }
 

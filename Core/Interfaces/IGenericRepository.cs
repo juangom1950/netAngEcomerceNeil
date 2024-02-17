@@ -3,6 +3,7 @@ using Core.Specifications;
 
 namespace Core.Interfaces
 {
+    // This interface can be use only with BaseEntity.
     public interface IGenericRepository<T> where T : BaseEntity
     {
         Task<T> GetByIdAsync(int id);

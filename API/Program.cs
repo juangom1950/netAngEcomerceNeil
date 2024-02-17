@@ -42,6 +42,7 @@ app.UseAuthorization();
 app.MapControllers();
 app.MapFallbackToController("Index", "Fallback");
 
+// We use "using" here because we know that the dispose method is going to be called after it finish with it.
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
 var context = services.GetRequiredService<StoreContext>();
@@ -50,10 +51,24 @@ var userManager = services.GetRequiredService<UserManager<AppUser>>();
 var logger = services.GetRequiredService<ILogger<Program>>();
 try
 {
-    await context.Database.MigrateAsync();
-    await identityContext.Database.MigrateAsync();
-    await StoreContextSeed.SeedAsync(context);
-    await AppIdentityDbContextSeed.SeedUsersAsync(userManager);
+    // Create Databases
+    identityContext.Database.EnsureCreated();
+    context.Database.EnsureCreated();
+
+    //await context.Database.MigrateAsync();
+    //await identityContext.Database.MigrateAsync();
+    if (!identityContext.Users.Any())
+    {
+        await AppIdentityDbContextSeed.SeedUsersAsync(userManager);
+    }
+
+    if (!context.Products.Any())
+    {
+        await StoreContextSeed.SeedAsync(context);
+    }
+   
+
+    //context.SaveChanges();
 }
 catch (Exception ex)
 {

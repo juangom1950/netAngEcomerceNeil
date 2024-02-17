@@ -5,6 +5,7 @@ using Infrastructure.Data;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using StackExchange.Redis;
 
 namespace API.Extensions
@@ -14,12 +15,18 @@ namespace API.Extensions
         public static IServiceCollection AddApplicationServices(this IServiceCollection services,
             IConfiguration config)
         {
+            // Here we are adding cache
             services.AddSingleton<IResponseCacheService, ResponseCacheService>();
             services.AddDbContext<StoreContext>(opt =>
             {
-                opt.UseNpgsql(config.GetConnectionString("DefaultConnection"));
+                // This configuration is comming from the appsettings.json
+                opt.UseSqlServer(config.GetConnectionString("DefaultConnection"));
+
+                //opt.UseNpgsql(config.GetConnectionString("DefaultConnection"));
             });
-            services.AddSingleton<IConnectionMultiplexer>(c => 
+
+            // Confugure Redis. We use it for cache data in memory.
+            services.AddSingleton<IConnectionMultiplexer>(c =>
             {
                 var options = ConfigurationOptions.Parse(config.GetConnectionString("Redis"));
                 return ConnectionMultiplexer.Connect(options);

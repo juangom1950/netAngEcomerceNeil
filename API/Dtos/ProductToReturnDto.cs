@@ -1,5 +1,6 @@
 namespace API.Dtos
 {
+    // This is what we are going to return to the client
     public class ProductToReturnDto
     {
         public int Id { get; set; }

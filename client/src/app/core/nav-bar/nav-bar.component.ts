@@ -13,6 +13,7 @@ export class NavBarComponent {
   constructor(public basketService: BasketService, public accountService: AccountService) {}
 
   getCount(items: BasketItem[]) {
+    // Here we are using a reduce function
     return items.reduce((sum, item) => sum + item.quantity, 0);
   }
 

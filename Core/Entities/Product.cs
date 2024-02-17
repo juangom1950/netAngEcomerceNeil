@@ -1,5 +1,6 @@
 namespace Core.Entities
 {
+    // Because BaseEntity has the Id property we don't need to add it here.
     public class Product : BaseEntity
     {
         public string Name { get; set; }

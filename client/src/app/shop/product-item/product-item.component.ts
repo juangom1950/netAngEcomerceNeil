@@ -13,6 +13,7 @@ export class ProductItemComponent {
   constructor(private basketService: BasketService) {}
 
   addItemToBasket() {
+    // We need to make sure that we have a product before we can execute it.
     this.product && this.basketService.addItemToBasket(this.product);
   }
 }

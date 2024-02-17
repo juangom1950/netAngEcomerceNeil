@@ -20,6 +20,7 @@ namespace Infrastructure.Data
 
         public async Task<Product> GetProductByIdAsync(int id)
         {
+            // With include we are adding the navigation properties.
             return await _context.Products
                 .Include(p => p.ProductType)
                 .Include(p => p.ProductBrand)
@@ -27,7 +28,9 @@ namespace Infrastructure.Data
         }
 
         public async Task<IReadOnlyList<Product>> GetProductsAsync()
-        {
+        {  
+            // With ToListAsync is the time when we sent this to Sql database
+            // With include we are adding the navigation properties.
             return await _context.Products
                 .Include(p => p.ProductType)
                 .Include(p => p.ProductBrand)

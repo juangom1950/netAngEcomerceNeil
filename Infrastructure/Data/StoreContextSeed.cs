@@ -12,9 +12,12 @@ namespace Infrastructure.Data
         {
             var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
+            // The order how we update things here is important
             if (!context.ProductBrands.Any())
             {
+                // We are doing this withthe path because we are calling this from the API
                 var brandsData = File.ReadAllText(path + @"/Data/SeedData/brands.json");
+                // This is going to deserialize this into a C# List<ProductBrand>
                 var brands = JsonSerializer.Deserialize<List<ProductBrand>>(brandsData);
                 context.ProductBrands.AddRange(brands);
             }
@@ -40,6 +43,7 @@ namespace Infrastructure.Data
                 context.DeliveryMethods.AddRange(methods);
             }
 
+            // This is going to save everything in our database
             if (context.ChangeTracker.HasChanges()) await context.SaveChangesAsync();
         }
     }

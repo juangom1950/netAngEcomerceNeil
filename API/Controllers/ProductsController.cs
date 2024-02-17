@@ -37,6 +37,8 @@ namespace API.Controllers
             var totalItems = await _productsRepo.CountAsync(countSpec);
             var products = await _productsRepo.ListAsync(spec);
 
+            // Execute a mapping from the source object to a new destination object.
+            // The source type is inferred from the source object.
             var data = _mapper.Map<IReadOnlyList<ProductToReturnDto>>(products);
 
             return Ok(new Pagination<ProductToReturnDto>(productParams.PageIndex,
@@ -55,6 +57,7 @@ namespace API.Controllers
 
             if (product == null) return NotFound(new ApiResponse(404));
 
+            // Here we are telling that it goes from Product to ProductToeturnDto.
             return _mapper.Map<Product, ProductToReturnDto>(product);
         }
 

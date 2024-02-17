@@ -2,6 +2,7 @@ namespace Core.Entities
 {
     public class CustomerBasket
     {
+        // We create this empty constructor so we don't have problems with Redis
         public CustomerBasket()
         {
         }

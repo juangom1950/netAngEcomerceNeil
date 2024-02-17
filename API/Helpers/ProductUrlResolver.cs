@@ -5,6 +5,9 @@ using Microsoft.Extensions.Configuration;
 
 namespace API.Helpers
 {
+    // Here we are adding rooth of the ApiUrl. We are getting this rooth url from the API/appsettings.json/appsettings.Development.json
+    //Inside IValueResolver we get from "Product", to "ProductToReturnDto", and the destination "string"
+    // We need to implement the IValueResolver interface here.
     public class ProductUrlResolver : IValueResolver<Product, ProductToReturnDto, string>
     {
         private readonly IConfiguration _config;
